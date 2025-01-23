@@ -1,0 +1,106 @@
+<svg viewBox="0 0 320 160" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+  <!-- Orange Segment -->
+  <path d="M8 160C3.58 160 0 156.42 0.2 152C2 117 15 83 38 56.4C40.9 53.1 46 52.9 49.2 55.9L60.9 66.9C64.1 69.9 64.2 75 61.4 78.4C44.1 99.2 33.9 125 32.2 152C32 156.4 28.4 160 24 160H8Z" fill="#F04D1A"></path>
+  <!-- Yellow Segment -->
+  <path d="M52.5 52.5C49.4 49.4 49.4 44.3 52.7 41.3C78.8 17.7 112 3.4 147 0.5C151.4 0.2 155.1 3.7 155.2 8.1L155.7 24.1C155.9 28.5 152.4 32.2 148 32.6C121.1 35.1 95.6 46.1 75.3 64C72 66.9 67 67 63.8 63.8L52.5 52.5Z" fill="#FBA94B"></path>
+  <!-- Purple Segment -->
+  <path d="M160 8C160 3.58 163.58 0 168 0.2C203.1 2 236.7 15.3 263.6 38C266.9 40.9 267.1 46 264 49.2L253.1 60.9C250.1 64.1 245 64.2 241.6 61.4C220.8 44.1 195 33.9 168 32.2C163.6 32 160 28.4 160 24V8Z" fill="#B981DA"></path>
+  <!-- Green Segment -->
+  <path d="M267.5 52.5C270.6 49.4 275.7 49.4 278.7 52.7C302.3 78.8 316.6 112 319.5 147C319.8 151.4 316.3 155.1 311.9 155.2L295.9 155.7C291.5 155.9 287.9 152.4 287.4 148C284.9 121.1 273.9 95.6 256 75.3C253.1 72 253 67 256.2 63.8L267.5 52.5Z" fill="#32AE60"></path>
+  <!-- White Circular Pointer -->
+  <circle id="pointer" cx="160" cy="160" r="12" fill="none" stroke="white" stroke-width="3"></circle>
+
+  <!-- Score Text -->
+  <text x="160" y="100" text-anchor="middle" font-size="50" font-weight="700" dy=".3em" fill="black" id="score-text">7.8</text>
+  <!-- Subtext -->
+  <text x="160" y="140" text-anchor="middle" font-size="16" font-weight="400" dy=".3em" fill="#747a84">out of 10</text>
+</svg>
+
+<script>
+  function updateGauge(score) {
+    if (score >= 0 && score < 2.5) {
+      updateRedSegment(score);
+    } else if (score >= 2.5 && score < 5) {
+      updateYellowSegment(score);
+    } else if (score >= 5 && score < 7.5) {
+      updatePurpleSegment(score);
+    } else if (score >= 7.5 && score <= 10) {
+      updateGreenSegment(score);
+    } else {
+      console.error("Invalid score. Must be between 0 and 10.");
+    }
+  }
+
+  function calculatePointerPosition(score, min, max, startAngle, endAngle, radius, centerX, centerY) {
+    const angle = startAngle + ((score - min) / (max - min)) * (endAngle - startAngle);
+
+    const adjustedAngle = 180 - angle;
+    const angleRad = (Math.PI * adjustedAngle) / 180;
+
+    const pointerX = centerX + radius * Math.cos(angleRad);
+    const pointerY = centerY - radius * Math.sin(angleRad);
+
+    return { x: pointerX, y: pointerY };
+  }
+
+  function updatePointerPosition(x, y) {
+    const pointer = document.getElementById("pointer");
+    pointer.setAttribute("cx", x.toFixed(1));
+    pointer.setAttribute("cy", y.toFixed(1));
+  }
+
+  // Helper functions for segment configurations
+  function redSegmentConfig() {
+    return { radius: 145, centerX: 161, centerY: 160 };
+  }
+
+  function yellowSegmentConfig() {
+    return { radius: 145, centerX: 159, centerY: 162 };
+  }
+
+  function purpleSegmentConfig() {
+    return { radius: 145, centerX: 158, centerY: 160 };
+  }
+
+  function greenSegmentConfig() {
+    return { radius: 145, centerX: 159, centerY: 160 };
+  }
+
+  // Update functions for each segment
+  function updateRedSegment(score) {
+    const { radius, centerX, centerY } = redSegmentConfig();
+    const { x, y } = calculatePointerPosition(score, 0, 2.5, 5, 40, radius, centerX, centerY);
+    updatePointerPosition(x, y);
+    updateScoreText(score);
+  }
+
+  function updateYellowSegment(score) {
+    const { radius, centerX, centerY } = yellowSegmentConfig();
+    const { x, y } = calculatePointerPosition(score, 2.5, 5, 45, 90, radius, centerX, centerY);
+    updatePointerPosition(x, y);
+    updateScoreText(score);
+  }
+
+  function updatePurpleSegment(score) {
+    const { radius, centerX, centerY } = purpleSegmentConfig();
+    const { x, y } = calculatePointerPosition(score, 5, 7.5, 90, 135, radius, centerX, centerY);
+    updatePointerPosition(x, y);
+    updateScoreText(score);
+  }
+
+  function updateGreenSegment(score) {
+    const { radius, centerX, centerY } = greenSegmentConfig();
+    const { x, y } = calculatePointerPosition(score, 7.5, 10, 135, 173, radius, centerX, centerY);
+    updatePointerPosition(x, y);
+    updateScoreText(score);
+  }
+
+  function updateScoreText(score) {
+    document.getElementById("score-text").textContent = score.toFixed(1);
+  }
+
+  // Set initial score
+  updateGauge(10);
+</script>
+
+
