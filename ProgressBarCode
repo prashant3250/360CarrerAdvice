@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Donut Progress Bar</title>
+  <style>
+    /* Container for the progress bar and text */
+    .progress-container {
+      text-align: center;
+      width: 200px;
+      margin: 0 auto;
+    }
+
+    /* Donut-shaped progress bar */
+    .donut-progress {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: conic-gradient(
+        #007bff 0% var(--progress, 0%), /* Progress color */
+        #e0e0e0 var(--progress, 0%) 100% /* Background color */
+      );
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inner circle to create the "donut hole" */
+    .donut-progress::after {
+      content: "";
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: white;
+    }
+
+    /* Score text */
+    .score-text {
+      font-size: 30px;
+      font-weight: bold;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Title and subtitle */
+    .title-text {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .subtitle-text {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-container">
+    <!-- Donut Progress Bar -->
+    <div class="donut-progress" style="--progress: 70%">
+      <div class="score-text">70%</div>
+    </div>
+
+    <!-- Title and Subtitle -->
+    <div class="title-text">Progress</div>
+    <div class="subtitle-text">Subtitle Example</div>
+  </div>
+</body>
+</html>
